@@ -200,12 +200,7 @@ const handleFinalSubmit = async (e) => {
 };
 
 
-const handleFinalStepClick = (e) => {
-  const nextPassed = handleNext(e);
-  if (nextPassed) {
-    handleFinalSubmit(); // error yoxdursa qeydiyyatı tamamla
-  }
-};
+
 
 
 
