@@ -12,10 +12,10 @@ function Register() {
   const [formDataErrors, setFormDataErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
  const [formData, setFormData] = useState({
-  first_name: "",  // ⬅️ dəyişdi
-  last_name: "",   // ⬅️ dəyişdi
-  birth_date: "",  // ⬅️ dəyişdi
-  mobile_number: "",  // ⬅️ dəyişdi
+  first_name: "",  
+  last_name: "",   
+  birth_date: "",  
+  mobile_number: "",  
   password: "",
   password2: "",
   gender: "",
@@ -46,19 +46,19 @@ const educationOptions = [
 ];
 
 const handleLanguageChange = (e) => {
-  const value = parseInt(e.target.value); // string gəlir, rəqəmə çeviririk
+  const value = parseInt(e.target.value); 
   const isChecked = e.target.checked;
 
   setFormData((prevData) => {
     let updatedLanguages = [...prevData.languages];
 
     if (isChecked) {
-      // əgər seçilibsə və artıq yoxdursa, əlavə et
+   
       if (!updatedLanguages.includes(value)) {
         updatedLanguages.push(value);
       }
     } else {
-      // əgər seçilməyibsə, sil
+      
       updatedLanguages = updatedLanguages.filter((id) => id !== value);
     }
   console.log("Yeni dillər:", updatedLanguages);
@@ -125,9 +125,9 @@ const validateForm = () => {
 const handleNext = ()=> {
   // e.preventDefault();
   const isValid = validateForm();
-  if (!isValid) return; // səhv varsa false qaytar
+  if (!isValid) return; 
 
-  setStep((prev) => prev + 1); // step dəyiş
+  setStep((prev) => prev + 1); 
  
 };
 console.log("step",step)
@@ -136,9 +136,9 @@ console.log("step",step)
 
 const handleFinalSubmit = async (e) => {
   
-  e.preventDefault(); // submit bloklanır
+  e.preventDefault();
 
-  const isValid = validateForm(); // son stepi yoxla
+  const isValid = validateForm(); 
   if (!isValid) return;
   const formDataToSend = new FormData();
 
@@ -153,10 +153,10 @@ const handleFinalSubmit = async (e) => {
   formDataToSend.append("profession_speciality", formData.profession_speciality);
   formDataToSend.append("experience_years", formData.experience_years);
   formData.cities.forEach((cityId) => {
-    formDataToSend.append("cities", cityId); // backend array kimi qəbul etməlidir
+    formDataToSend.append("cities", cityId); 
   });
   formData.languages.forEach((langId) => {
-    formDataToSend.append("languages", langId); // array kimi
+    formDataToSend.append("languages", langId); 
   });
   formDataToSend.append("education", formData.education);
   formDataToSend.append("educationField", formData.educationField);
@@ -176,7 +176,7 @@ const handleFinalSubmit = async (e) => {
 
  
   formData.work_images.forEach((file, index) => {
-    formDataToSend.append("work_images", file); // eyni adla əlavə etmək backend array kimi qəbul edirsə
+    formDataToSend.append("work_images", file); 
   });
 
   try {
@@ -251,7 +251,7 @@ const handleChange = (e) => {
 
 
    if (name === "mobile_number") {
-  const valueWithoutSpaces = value.replace(/\s/g, ""); // boşluqları sil
+  const valueWithoutSpaces = value.replace(/\s/g, ""); 
   const onlyDigits = /^\d+$/;
 
   if (!onlyDigits.test(valueWithoutSpaces)) {
@@ -307,7 +307,7 @@ if (name === "password2") {
 
 
 
-    // Form dəyərini güncəllə
+    
     setFormData((prev) => ({
       ...prev,
       [name]: type === "number" ? parseInt(value) : value,
@@ -395,7 +395,7 @@ console.log(formData.cities)
                   className="w-full mt-1 p-2  rounded-md border-[1px] border-[rgba(195,200,209,1)] "
                 />
           {formDataErrors.first_name && (
-  console.log("Error göstərilir:", formDataErrors.first_name), // burda çıxmalıdır
+  console.log("Error göstərilir:", formDataErrors.first_name), 
   <p className="text-red-500 text-sm mt-1">{formDataErrors.first_name}</p>
 )}
 
@@ -412,7 +412,7 @@ console.log(formData.cities)
                   className="w-full mt-1 p-2 border-[1px] border-[rgba(195,200,209,1)]  rounded-md"
                 />
                  {formDataErrors.last_name&& (
-  console.log("Error göstərilir:", formDataErrors.last_name), // burda çıxmalıdır
+  console.log("Error göstərilir:", formDataErrors.last_name), 
   <p className="text-red-500 text-sm mt-1">{formDataErrors.last_name}</p>
 )}
 
@@ -428,7 +428,7 @@ console.log(formData.cities)
                   className="w-full mt-1 p-2 border-[1px] border-[rgba(195,200,209,1)]  rounded-md"
                 />
                 {formDataErrors.birth_date&& (
-  console.log("Error göstərilir:", formDataErrors.birth_date), // burda çıxmalıdır
+  console.log("Error göstərilir:", formDataErrors.birth_date), 
   <p className="text-red-500 text-sm mt-1">{formDataErrors.birth_date}</p>
 )}
               </div>
@@ -447,7 +447,7 @@ console.log(formData.cities)
 
                 </div>
                 {formDataErrors.mobile_number&& (
-  console.log("Error göstərilir:", formDataErrors.mobile_number), // burda çıxmalıdır
+  console.log("Error göstərilir:", formDataErrors.mobile_number), 
   <p className="text-red-500 text-sm mt-1">{formDataErrors.mobile_number}</p>
 )}
               </div>
@@ -471,7 +471,7 @@ console.log(formData.cities)
        {formDataErrors.password ? (
     <p className="text-red-500 text-sm mt-1">{formDataErrors.password}</p>
   ) : (
-    // Əks halda, təlimat mesajını göstər
+   
     <p className="text-[12px] text-[rgba(101,111,131,1)] mt-1">
       Şifrəniz ən azı 8 simvoldan ibarət olmalı, özündə minimum bir böyük hərf, rəqəm və xüsusi simvol (məsələn: !, @, #, -, _, +) ehtiva etməlidir
     </p>
@@ -490,7 +490,7 @@ console.log(formData.cities)
                   className="w-full mt-1 p-2 border-[1px] rounded-md border-[rgba(195,200,209,1)] "
                 />
                 {formDataErrors.password2&& (
-  console.log("Error göstərilir:", formDataErrors.password2), // burda çıxmalıdır
+  console.log("Error göstərilir:", formDataErrors.password2), 
   <p className="text-red-500 text-sm mt-1">{formDataErrors.password2}</p>
 )}
                    <div
@@ -513,7 +513,7 @@ console.log(formData.cities)
                   </label>
                 </div>
                 {formDataErrors.gender&& (
-  console.log("Error göstərilir:", formDataErrors.gender), // burda çıxmalıdır
+  console.log("Error göstərilir:", formDataErrors.gender), 
   <p className="text-red-500 text-sm mt-1">{formDataErrors.gender}</p>
 )}
               </div>
