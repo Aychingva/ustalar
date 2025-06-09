@@ -2,12 +2,15 @@ import React, { useRef, useState } from 'react';
 import profilSekil from "../assets/img.png";
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowBack } from "react-icons/io";
-import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io"
+import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
 
 function Register() {
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
   const [formDataErrors, setFormDataErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
  const [formData, setFormData] = useState({
   first_name: "",  // ⬅️ dəyişdi
   last_name: "",   // ⬅️ dəyişdi
@@ -87,30 +90,31 @@ const validateForm = () => {
   const errors = {};
 
   if (step === 1) {
-    if (!formData.first_name) errors.first_name = "Ad tələb olunur";
-    if (!formData.last_name) errors.last_name = "Soyad tələb olunur";
-    if (!formData.birth_date) errors.birth_date = "Doğum tarixi tələb olunur";
-    if (!formData.mobile_number) errors.mobile_number = "Mobil nömrə tələb olunur";
-    if (!formData.password) errors.password = "Şifrə tələb olunur";
-    if (!formData.password2) errors.password2 = "Təkrar şifrə tələb olunur";
+    if (!formData.first_name) errors.first_name = "Zəhmət olmasa, məlumatları daxil edin";
+    if (!formData.last_name) errors.last_name = "Zəhmət olmasa, məlumatları daxil edin";
+    if (!formData.birth_date) errors.birth_date = "Zəhmət olmasa, məlumatları daxil edin";
+    if (!formData.mobile_number) errors.mobile_number = "Zəhmət olmasa, məlumatları daxil edin";
+    if (!formData.password) errors.password = "Zəhmət olmasa, məlumatları daxil edin";
+    if (!formData.password2) errors.password2 = "Zəhmət olmasa, məlumatları daxil edin";
     if (formData.password !== formData.password2)
       errors.password2 = "Şifrələr uyğun deyil";
-    if (!formData.gender) errors.gender = "Cinsiyyət seçilməlidir";
+    if (!formData.gender) errors.gender = "Zəhmət olmasa, məlumatları daxil edin";
   }
 
   if (step === 2) {
-    if (!formData.profession_area) errors.profession_area = "Peşə sahəsi tələb olunur";
-    if (!formData.profession_speciality) errors.profession_speciality = "İxtisas tələb olunur";
-    if (!formData.experience_years) errors.experience_years = "Təcrübə ili tələb olunur";
-    if (formData.cities.length === 0) errors.cities = "Ən azı bir şəhər seçilməlidir";
-    if (formData.languages.length === 0) errors.languages = "Ən azı bir dil seçilməlidir";
+    if (!formData.profession_area) errors.profession_area = "Zəhmət olmasa, məlumatları daxil edin";
+    if (!formData.profession_speciality) errors.profession_speciality = "Zəhmət olmasa, məlumatları daxil edin";
+    if (!formData.experience_years) errors.experience_years = "Zəhmət olmasa, məlumatları daxil edin";
+    if (formData.cities.length === 0) errors.cities = "Zəhmət olmasa, məlumatları daxil edin";
+  
   }
 
   if (step === 3) {
-    if (!formData.education) errors.education = "Təhsil məlumatı tələb olunur";
-    if (!formData.educationField) errors.educationField = "Təhsil sahəsi tələb olunur";
-    if (!formData.about) errors.about = "Haqqınızda məlumat daxil edin";
-    if (!formData.profile_image) errors.profile_image = "Profil şəkli əlavə olunmalıdır";
+    if (!formData.education) errors.education = "TZəhmət olmasa, məlumatları daxil edin";
+    if (!formData.educationField) errors.educationField = "Zəhmət olmasa, məlumatları daxil edin";
+   
+ 
+      if (formData.languages.length === 0) errors.languages = "Zəhmət olmasa, məlumatları daxil edin";
   }
 
   setFormDataErrors(errors);
@@ -118,19 +122,24 @@ const validateForm = () => {
   return Object.keys(errors).length === 0;
 };
 
-const handleNext = (e) => {
-    e.preventDefault(); 
+const handleNext = ()=> {
+  // e.preventDefault();
   const isValid = validateForm();
-  if (!isValid) return; // səhv varsa, növbətiyə keçmirik
-// əgər validdirsə, növbəti stepe keçirik
-    setStep((prev) => prev + 1)
-};
-console.log(step)
+  if (!isValid) return; // səhv varsa false qaytar
 
-
-const handleFinalSubmit = async () => {
-  
+  setStep((prev) => prev + 1); // step dəyiş
  
+};
+console.log("step",step)
+
+
+
+const handleFinalSubmit = async (e) => {
+  
+  e.preventDefault(); // submit bloklanır
+
+  const isValid = validateForm(); // son stepi yoxla
+  if (!isValid) return;
   const formDataToSend = new FormData();
 
   formDataToSend.append("first_name", formData.first_name);
@@ -153,19 +162,19 @@ const handleFinalSubmit = async () => {
   formDataToSend.append("educationField", formData.educationField);
   formDataToSend.append("about", formData.about);
 
-  // Sosial media
+ 
   formDataToSend.append("facebook", formData.socialLinks.facebook);
   formDataToSend.append("instagram", formData.socialLinks.instagram);
   formDataToSend.append("tiktok", formData.socialLinks.tiktok);
   formDataToSend.append("linkedin", formData.socialLinks.linkedin);
 
-  // Şəkil (profil)
+
   if (formData.profile_image) {
     formDataToSend.append("profile_image", formData.profile_image);
     console.log(formData.profile_image)
   }
 
-  // Portfolio şəkilləri
+ 
   formData.work_images.forEach((file, index) => {
     formDataToSend.append("work_images", file); // eyni adla əlavə etmək backend array kimi qəbul edirsə
   });
@@ -191,27 +200,13 @@ const handleFinalSubmit = async () => {
 };
 
 
-//   try {
-//     const res = await fetch("https://10a7-213-172-90-209.ngrok-free.app/api/users/register/", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(dataToSend),
-//       credentials: "include" 
-//     });
+const handleFinalStepClick = (e) => {
+  const nextPassed = handleNext(e);
+  if (nextPassed) {
+    handleFinalSubmit(); // error yoxdursa qeydiyyatı tamamla
+  }
+};
 
-//     const result = await res.json();
-//     if (res.ok) {
-//       alert("Qeydiyyat uğurludur!");
-//     } else {
-//       console.error("Server error: ", result);
-//       alert("Xətalar: " + JSON.stringify(result, null, 2));
-//     }
-//   } catch (e) {
-//     console.error("Error:", e);
-//   }
-// };
 
 
   const fileInputRef = useRef(null);
@@ -231,19 +226,100 @@ const handleChange = (e) => {
   if (multiple) {
     const values = Array.from(options)
       .filter((opt) => opt.selected)
-      .map((opt) => parseInt(opt.value)); // ✅ integer olsun
+      .map((opt) => parseInt(opt.value));
 
     setFormData((prev) => ({
       ...prev,
       [name]: values,
     }));
   } else {
+    // Xəta yoxlaması yalnız "first_name" üçün
+    if (name === "first_name"||name === "last_name") {
+       const azOnlyLettersRegex = /^[AaBbCcÇçDdEeƏəFfGgĞğHhİiIıJjKkLlMmNnOoÖöPpRrSsŞşTtUuÜüVvYyZz]+$/;
+      if (value.length > 20) {
+        setFormDataErrors((prev) => ({
+          ...prev,
+          [name]: "Ən çox 20 simvol ola bilər.",
+        }));
+      } else if (!azOnlyLettersRegex.test(value)) {
+        setFormDataErrors((prev) => ({
+          ...prev,
+          [name]: "Yalnız Azərbaycan hərfləri ilə yazılmalıdır.",
+        }));
+      } else {
+        setFormDataErrors((prev) => ({
+          ...prev,
+          [name]: "",
+        }));
+      }
+    }
+
+
+   if (name === "mobile_number") {
+  const valueWithoutSpaces = value.replace(/\s/g, ""); // boşluqları sil
+  const onlyDigits = /^\d+$/;
+
+  if (!onlyDigits.test(valueWithoutSpaces)) {
+    setFormDataErrors((prev) => ({
+      ...prev,
+      [name]: "Yalnız rəqəmlərdən ibarət olmalıdır.",
+    }));
+  } else if (valueWithoutSpaces.length !== 9) {
+    setFormDataErrors((prev) => ({
+      ...prev,
+      [name]: "Simvol sayı 9 olmalıdır. 50 123 45 67 formatında daxil edin.",
+    }));
+  } else {
+    setFormDataErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
+  }
+}
+
+if (name === "password") {
+  const passwordRegex =
+    /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#\-\_\+])[A-Za-z\d!@#\-\_\+]{8,15}$/;
+
+  if (!passwordRegex.test(value)) {
+    setFormDataErrors((prev) => ({
+      ...prev,
+      [name]:
+        "Şifrəniz ən azı 8 simvoldan ibarət olmalı, özündə minimum bir böyük hərf, rəqəm və xüsusi simvol (məsələn: !, @, #, -, _, +) ehtiva etməlidir.",
+    }));
+  } else {
+    setFormDataErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
+  }
+}
+
+
+if (name === "password2") {
+  if (value !== formData.password) {
+    setFormDataErrors((prev) => ({
+      ...prev,
+      password2: "Şifrələr uyğun deyil.",
+    }));
+  } else {
+    setFormDataErrors((prev) => ({
+      ...prev,
+      password2: "",
+    }));
+  }
+}
+
+
+
+    // Form dəyərini güncəllə
     setFormData((prev) => ({
       ...prev,
       [name]: type === "number" ? parseInt(value) : value,
     }));
   }
 };
+
   const handleClick = () => {
     navigate("/login");
   };
@@ -321,7 +397,7 @@ console.log(formData.cities)
                   value={formData.first_name}
                   onChange={handleChange}
                   placeholder="Adınızı daxil edin"
-                  className="w-full mt-1 p-2 border rounded-md"
+                  className="w-full mt-1 p-2  rounded-md border-[1px] border-[rgba(195,200,209,1)] "
                 />
           {formDataErrors.first_name && (
   console.log("Error göstərilir:", formDataErrors.first_name), // burda çıxmalıdır
@@ -338,8 +414,13 @@ console.log(formData.cities)
                   value={formData.last_name}
                   onChange={handleChange}
                   placeholder="Soyadınızı daxil edin"
-                  className="w-full mt-1 p-2 border rounded-md"
+                  className="w-full mt-1 p-2 border-[1px] border-[rgba(195,200,209,1)]  rounded-md"
                 />
+                 {formDataErrors.last_name&& (
+  console.log("Error göstərilir:", formDataErrors.last_name), // burda çıxmalıdır
+  <p className="text-red-500 text-sm mt-1">{formDataErrors.last_name}</p>
+)}
+
               </div>
               <div className="py-[10px]">
                 <label className="text-sm font-semibold">Doğum tarixi <span className="text-red-500">*</span></label>
@@ -349,8 +430,12 @@ console.log(formData.cities)
                   value={formData.birth_date}
                   onChange={handleChange}
                   placeholder="Gün / ay / il"
-                  className="w-full mt-1 p-2 border rounded-md"
+                  className="w-full mt-1 p-2 border-[1px] border-[rgba(195,200,209,1)]  rounded-md"
                 />
+                {formDataErrors.birth_date&& (
+  console.log("Error göstərilir:", formDataErrors.birth_date), // burda çıxmalıdır
+  <p className="text-red-500 text-sm mt-1">{formDataErrors.birth_date}</p>
+)}
               </div>
               <div className="py-[10px]">
                 <label className="text-sm font-semibold">Mobil nömrə <span className="text-red-500">*</span></label>
@@ -362,32 +447,63 @@ console.log(formData.cities)
       value={formData.mobile_number}
                     onChange={handleChange}
                     placeholder="50 123 45 67"
-                    className="w-full p-2 border rounded-r-md"
+                    className="w-full p-2 border-[1px] border-[rgba(195,200,209,1)]  rounded-r-md"
                   />
+
                 </div>
+                {formDataErrors.mobile_number&& (
+  console.log("Error göstərilir:", formDataErrors.mobile_number), // burda çıxmalıdır
+  <p className="text-red-500 text-sm mt-1">{formDataErrors.mobile_number}</p>
+)}
               </div>
-              <div className="py-[10px]">
+              <div className="py-[10px] relative">
                 <label className="text-sm font-semibold">Şifrə <span className="text-red-500">*</span></label>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Şifrənizi daxil edin"
-                  className="w-full mt-1 p-2 border rounded-md"
+                  className="w-full mt-1 p-2 border-[1px] border-[rgba(195,200,209,1)] rounded-md"
                 />
+               
+                 <div
+        className="absolute right-3 top-[30%] translate-y-[10px] cursor-pointer text-gray-600"
+        onClick={() => setShowPassword((prev) => !prev)}
+      >
+        {showPassword ? <FaEye  size={20} /> : < FaEyeSlash size={20} />}
+      </div>
+       {formDataErrors.password ? (
+    <p className="text-red-500 text-sm mt-1">{formDataErrors.password}</p>
+  ) : (
+    // Əks halda, təlimat mesajını göstər
+    <p className="text-[12px] text-[rgba(101,111,131,1)] mt-1">
+      Şifrəniz ən azı 8 simvoldan ibarət olmalı, özündə minimum bir böyük hərf, rəqəm və xüsusi simvol (məsələn: !, @, #, -, _, +) ehtiva etməlidir
+    </p>
+  )}
               </div>
-              <div className="py-[10px]">
+              
+              <div className="py-[10px] relative">
                 <label className="text-sm font-semibold">Şifrəni təkrar yazın <span className="text-red-500">*</span></label>
                 <input
-                  type="password"
+             type={showPassword ? "text" : "password"}
                  
               name="password2"
     value={formData.password2}
                   onChange={handleChange}
                   placeholder="Şifrənizi təkrar daxil edin"
-                  className="w-full mt-1 p-2 border rounded-md"
+                  className="w-full mt-1 p-2 border-[1px] rounded-md border-[rgba(195,200,209,1)] "
                 />
+                {formDataErrors.password2&& (
+  console.log("Error göstərilir:", formDataErrors.password2), // burda çıxmalıdır
+  <p className="text-red-500 text-sm mt-1">{formDataErrors.password2}</p>
+)}
+                   <div
+        className="absolute right-3 top-[45%] translate-y-[10px] cursor-pointer text-gray-600"
+        onClick={() => setShowPassword((prev) => !prev)}
+      >
+        {showPassword ? <FaEye  size={20} /> : < FaEyeSlash size={20} />}
+      </div>
               </div>
               <div className="py-[10px]">
                 <label className="text-sm font-semibold">Cins <span className="text-red-500">*</span></label>
@@ -401,8 +517,12 @@ console.log(formData.cities)
                     Qadın
                   </label>
                 </div>
+                {formDataErrors.gender&& (
+  console.log("Error göstərilir:", formDataErrors.gender), // burda çıxmalıdır
+  <p className="text-red-500 text-sm mt-1">{formDataErrors.gender}</p>
+)}
               </div>
-              <button type="submit" className=" flex justify-center items-center bg-[rgba(26,72,98,1)] text-white py-2 rounded-md mt-4 w-full"  onClick={handleNext}>
+              <button type="button" className=" flex justify-center items-center bg-[rgba(26,72,98,1)] text-white py-2 rounded-md mt-4 w-full"  onClick={handleNext}>
                  Növbəti <IoIosArrowForward className='pt-[2px]' />
 
               </button>
@@ -450,6 +570,11 @@ console.log(formData.cities)
   <option value="Səhiyyə">Səhiyyə</option>
   <option value="İnşaat">İnşaat</option>
 </select>
+{formDataErrors.profession_area&& (
+
+  <p className="text-red-500 text-sm mt-1">{formDataErrors.profession_area}</p>
+)}
+
     </div>
 
     <div className="mb-4">
@@ -466,6 +591,10 @@ console.log(formData.cities)
   <option value="UI/UX Designer">UI/UX Designer</option>
   <option value="Mobile Developer">Mobile Developer</option>
 </select>
+{formDataErrors.profession_speciality&& (
+
+  <p className="text-red-500 text-sm mt-1">{formDataErrors.profession_speciality}</p>
+)}
     </div>
 
     <div className="mb-4">
@@ -478,6 +607,10 @@ console.log(formData.cities)
            onChange={handleChange}
         className="w-full border p-2 rounded-md"
       />
+      {formDataErrors.experience_years&& (
+
+  <p className="text-red-500 text-sm mt-1">{formDataErrors.experience_years}</p>
+)}
     </div>
 
  <div className="mb-6">
@@ -488,7 +621,7 @@ console.log(formData.cities)
     <select
       name="cities"
       value={formData.cities}
-      multiple
+     multiple
       onChange={handleChange}
       className="w-full  border border-gray-300 bg-[rgba(195,200,209,1)] p-2 pr-10 rounded-md focus:outline-none focus:ring-2"
     >
@@ -501,6 +634,10 @@ console.log(formData.cities)
     </select>
    
   </div>
+  {formDataErrors.cities&& (
+
+  <p className="text-red-500 text-sm mt-1">{formDataErrors.cities}</p>
+)}
 </div>
 
      <div className="flex justify-between items-center">
@@ -512,9 +649,9 @@ console.log(formData.cities)
        <IoIosArrowBack className='pt-[2px]'/> Geri 
       </button>
       <button
-        type="submit"
+        type="button"
         className=" flex justify-center items-center bg-[rgba(26,72,98,1)] text-white py-2 px-6 rounded-md w-[65%] "  
-        onClick={()=>setStep(3)}
+     onClick={handleNext}
       >
         Növbəti <IoIosArrowForward className='pt-[2px]' />
 
@@ -572,6 +709,10 @@ console.log(formData.cities)
       </label>
     ))}
   </div>
+  {formDataErrors.education&& (
+
+  <p className="text-red-500 text-sm mt-1">{formDataErrors.education}</p>
+)}
 </div>
 
 
@@ -585,6 +726,10 @@ console.log(formData.cities)
         value={formData.educationField}
           onChange={handleChange}
       />
+      {formDataErrors.educationField&& (
+
+  <p className="text-red-500 text-sm mt-1">{formDataErrors.educationField}</p>
+)}
     </div>
 
     
@@ -604,6 +749,10 @@ console.log(formData.cities)
       </label>
     ))}
   </div>
+  {formDataErrors.languages&& (
+
+  <p className="text-red-500 text-sm mt-1">{formDataErrors.languages}</p>
+)}
 </div>
 
 
@@ -684,7 +833,7 @@ console.log(formData.cities)
           <IoIosArrowBack />Geri
       </button>
       <button
-        type="submit"
+        type="button"
         className="flex items-center justify-center bg-[rgba(26,72,98,1)] text-white text-sm px-6 py-2 rounded-md hover:bg-[#153b45] w-[65%]"
         onClick={handleFinalSubmit}
       >
