@@ -322,23 +322,6 @@ if (name === "password2") {
 console.log(formData.education)
 console.log(formData.cities)
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   const { name, surname, dob, phone, password, confirmPassword, gender } = formData;
-
-  //   if (!name || !surname || !dob || !phone || !password || !confirmPassword || !gender) {
-  //     alert("Zəhmət olmasa bütün sahələri doldurun.");
-  //     return;
-  //   }
-
-  //   if (password !== confirmPassword) {
-  //     alert("Şifrələr uyğun deyil.");
-  //     return;
-  //   }
-
-  //   setStep(2);
-  // };
 
   return (
     <div>
