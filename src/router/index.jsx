@@ -1,11 +1,9 @@
 
-import React from 'react'
 import { createBrowserRouter } from 'react-router-dom'
-import Rey from '../rey';
-import Register from '../register';
-import Login from '../login';
-
-
+import Rey from '../pages/rey';
+import Register from '../pages/register';
+import Login from '../pages/login';
+import React from 'react';
 
 export const router = createBrowserRouter([
   {

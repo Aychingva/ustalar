@@ -1,5 +1,4 @@
-import React from 'react'
-import profilSekil from "../assets/img.png";
+import { ProfilePicture } from "../../assets/export"
 
 function Login() {
   return (
@@ -17,7 +16,7 @@ function Login() {
         </div>
   
         <div className="relative w-full min-h-screen ">
-          <img src={profilSekil} className="w-full  h-full object-cover" />
+          <img src={ProfilePicture} className="w-full  h-full object-cover" />
             <div className="absolute inset-0 flex justify-center items-start pt-[80px] bg-[rgba(0,0,0,0.25)]">
               <form className="bg-white/70 backdrop-blur-sm p-6 rounded-lg shadow-lg w-[50%] max-w-md">
                  <h2 className="text-[rgba(26,72,98,1)] text-[25px]">Şəxsi məlumatlar</h2>
