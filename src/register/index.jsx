@@ -228,7 +228,7 @@ const handleChange = (e) => {
       [name]: values,
     }));
   } else {
-    // Xəta yoxlaması yalnız "first_name" üçün
+  
     if (name === "first_name"||name === "last_name") {
        const azOnlyLettersRegex = /^[AaBbCcÇçDdEeƏəFfGgĞğHhİiIıJjKkLlMmNnOoÖöPpRrSsŞşTtUuÜüVvYyZz]+$/;
       if (value.length > 20) {
